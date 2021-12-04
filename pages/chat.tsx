@@ -62,7 +62,7 @@ const Chat: NextPage = () => {
           <div
             style={{ scrollMarginBottom: "20px" }}
             ref={messageContainerRef}
-            className="max-w-screen-sm mx-auto w-full my-10 space-y-5"
+            className="max-w-screen-sm mx-auto w-full"
           >
             {chats.map((chat) => {
               return (
@@ -104,40 +104,41 @@ const Chat: NextPage = () => {
   );
 };
 function ChatItem({ username, isUser, message }) {
-  console.log("name", username);
   return (
-    <div
-      className={classNames(
-        "flex items-end",
-        isUser ? "justify-end" : "justify-start"
-      )}
-    >
+    <div className="w-full group px-5 py-4 bg-white hover:bg-gray-50">
       <div
         className={classNames(
-          "flex flex-col space-y-1 text-sm font-medium max-w-xs mx-2",
-          isUser ? "order-1 items-end" : "order-2 items-start"
+          "flex items-end",
+          isUser ? "justify-end" : "justify-start"
         )}
       >
-        <div>{username}</div>
-        <div>
-          <span
-            className={classNames(
-              "px-4 py-2 rounded-lg inline-block border border-black",
-              isUser ? "rounded-br-none" : "rounded-bl-none"
-            )}
-          >
-            {message}
-          </span>
+        <div
+          className={classNames(
+            "flex flex-col space-y-1 text-sm font-medium max-w-xs mx-2",
+            isUser ? "order-1 items-end" : "order-2 items-start"
+          )}
+        >
+          <div>{username}</div>
+          <div>
+            <span
+              className={classNames(
+                "px-4 py-2 rounded-lg inline-block border border-black",
+                isUser ? "rounded-br-none" : "rounded-bl-none"
+              )}
+            >
+              {message}
+            </span>
+          </div>
         </div>
+        <img
+          src="/horse-head.svg"
+          alt="My profile"
+          className={classNames(
+            "w-6 h-6 rounded-full",
+            isUser ? "order-2" : "order-1"
+          )}
+        />
       </div>
-      <img
-        src="/horse-head.svg"
-        alt="My profile"
-        className={classNames(
-          "w-6 h-6 rounded-full",
-          isUser ? "order-2" : "order-1"
-        )}
-      />
     </div>
   );
 }
