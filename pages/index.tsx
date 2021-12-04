@@ -1,26 +1,30 @@
 import type { NextPage } from "next";
-import { Example } from "../src/example-feature/Example";
+import Link from "next/link";
 const Home: NextPage = () => {
   return (
-    <section className="text-white">
-      <div className="text-7xl leading-[0]">🐴</div>
-      <h1 className="text-8xl mb-5 font-bold leading-[6rem]">
+    <section className="text-black font-sans">
+      <div className="text-7xl leading-[0]">🗨️🐴</div>
+      <h1 className="text-8xl mb-3 font-bold leading-[6rem]">
         <span className="text-3xl font-light">Welcome to</span>
         <br />
-        Horse Chat
+        <span className="font-horse">
+          Horse Chat<span className="!text-blue-700">.</span>
+        </span>
       </h1>
-      <p className="text-gray-200 font-normal max-w-screen-sm text-2xl">
+      <p className="text-gray-700 font-normal max-w-screen-sm text-2xl">
         Horse Chat is the only messaging app built exclusively{" "}
         <strong>for</strong> and <strong>by</strong> horses. We enable horses to
         do what they do best: talk amongst themselves, respectfully, on the
         internet.
       </p>
       <div className="space-x-10 mt-10">
-        <button className="px-10 h-11 button-glow bg-black  text-lg rounded-md">
-          {" "}
-          Start Chatting
-        </button>
-        <a className=" px-10 h-11 text-lg rounded-md shadow-md">
+        <Link href="/login">
+          <a className="px-5 button-glow  font-medium py-3 bg-blue-700 text-white text-lg rounded-lg">
+            Start Chatting— it's free
+          </a>
+        </Link>
+
+        <a className="underline text-lg text-blue-500 cursor-pointer">
           I'm not a horse...
         </a>
       </div>

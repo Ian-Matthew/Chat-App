@@ -4,6 +4,10 @@ module.exports = {
   darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {
+      fontFamily: {
+        horse: ["Staatliches", "cursive"],
+        display: ["Josefin Sans", "sans-serif"],
+      },
       animation: {
         score: "score .6s ease-in-out",
         "score-perfect": "score .4s ease-in-out .1s",
@@ -47,5 +51,5 @@ module.exports = {
   variants: {
     extend: {},
   },
-  plugins: [],
+  plugins: [require("@tailwindcss/forms")],
 };
