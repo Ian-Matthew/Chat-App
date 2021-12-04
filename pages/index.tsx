@@ -2,9 +2,9 @@ import type { NextPage } from "next";
 import Link from "next/link";
 const Home: NextPage = () => {
   return (
-    <section className="text-black font-sans">
-      <div className="text-7xl leading-[0]">🗨️🐴</div>
-      <h1 className="text-8xl mb-3 font-bold leading-[6rem]">
+    <section className="text-black font-sans  mt-20 max-w-screen-lg">
+      <div className="text-7xl -mb-9 ">🗨️🐴</div>
+      <h1 className="text-8xl mb-3 font-bold ">
         <span className="text-3xl font-light">Welcome to</span>
         <br />
         <span className="font-horse">
