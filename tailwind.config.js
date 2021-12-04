@@ -4,10 +4,6 @@ module.exports = {
   darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {
-      fontFamily: {
-        display: ["Helvetica", "sans-serif"],
-        fancy: ["Garamond", "serif"],
-      },
       animation: {
         score: "score .6s ease-in-out",
         "score-perfect": "score .4s ease-in-out .1s",
