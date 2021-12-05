@@ -25,7 +25,7 @@ const Login: NextPage = () => {
           onSubmit={(e) => {
             console.log(e);
             e.preventDefault();
-            router.push(`/chat?username=${username}`);
+            router.push(`/chat/horses?username=${username}`);
           }}
           className="max-w-sm w-full space-y-5"
         >

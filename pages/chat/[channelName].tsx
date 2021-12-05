@@ -4,6 +4,9 @@ import React from "react";
 import classNames from "classnames";
 import { useRouter } from "next/router";
 import Pusher from "pusher-js";
+import { GetServerSideProps } from "next";
+import ServerPusher from "pusher";
+
 function useLiveMessages(channelName: string, username: string) {
   const [messages, setMessages] = React.useState<any[]>([]);
 
@@ -48,7 +51,8 @@ function useLiveMessages(channelName: string, username: string) {
 
   return { messages, sendMessage };
 }
-const Chat: NextPage = () => {
+const Chat: NextPage = (props) => {
+  console.log(props);
   const router = useRouter();
   const username = router.query.username as string;
   const [message, setMessage] = React.useState("");
@@ -179,5 +183,28 @@ function ChatItem({ username, isUser, message }) {
     </div>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const pusher = new ServerPusher({
+    appId: process.env.PUSHER_APP_ID as string,
+    key: process.env.NEXT_PUBLIC_PUSHER_APP_KEY as string,
+    secret: process.env.PUSHER_APP_SECRET as string,
+    cluster: process.env.NEXT_PUBLIC_PUSHER_APP_CLUSTER as string,
+    useTLS: true,
+  });
+  try {
+    const res = await pusher.get({ path: "/channels" });
+    const body = await res.json();
+    const channelInfo = body.channels;
+    return {
+      props: {
+        channelInfo,
+      },
+    };
+  } catch (error) {
+    console.log(error);
+    return {};
+  }
+};
 
 export default Chat;
