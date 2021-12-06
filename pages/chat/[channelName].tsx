@@ -5,10 +5,14 @@ import classNames from "classnames";
 import { useRouter } from "next/router";
 import Pusher from "pusher-js";
 import { GetServerSideProps } from "next";
-import ServerPusher from "pusher";
+import { auth, zrange } from "@upstash/redis";
 
-function useLiveMessages(channelName: string, username: string) {
-  const [messages, setMessages] = React.useState<any[]>([]);
+function useLiveMessages(
+  channelName: string,
+  username: string,
+  initialMessages: string[]
+) {
+  const [messages, setMessages] = React.useState<any[]>(initialMessages);
 
   function handleMessage({ message = null, username = null }) {
     if (message && username) {
@@ -45,21 +49,26 @@ function useLiveMessages(channelName: string, username: string) {
     };
   }, [channelName]);
 
+  let displayMessages =
+    username === "human"
+      ? messages.map((m) => ({ message: "neigh", username: "Secret Horse" }))
+      : messages;
+
   React.useEffect(() => {
     console.log("messages", messages);
   }, [messages.length]);
 
-  return { messages, sendMessage };
+  return { messages: displayMessages, sendMessage };
 }
 const Chat: NextPage = (props) => {
-  console.log(props);
   const router = useRouter();
-  const username = router.query.username as string;
+  const username = router.query.username || "human";
   const [message, setMessage] = React.useState("");
 
   const { messages, sendMessage } = useLiveMessages(
     "horses",
-    username || "Secret Horse"
+    username,
+    props.messages
   );
 
   const messageContainerRef = React.useRef();
@@ -121,26 +130,28 @@ const Chat: NextPage = (props) => {
           </div>
         </div>
       </main>
-      <div className="h-16 ">
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            const messageVal = message.trim();
-            sendMessage(messageVal);
-            setMessage("");
-          }}
-          className="max-w-screen-sm mx-auto flex flex-col border-[1px] border-black"
-        >
-          <input
-            autoFocus
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            className="w-full border-0"
-            type="text"
-          />
-          <button className="bg-black text-white px-3 py-1">send</button>
-        </form>
-      </div>
+      {username !== "human" ? (
+        <div className="h-16 ">
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              const messageVal = message.trim();
+              sendMessage(messageVal);
+              setMessage("");
+            }}
+            className="max-w-screen-sm mx-auto flex flex-col border-[1px] border-black"
+          >
+            <input
+              autoFocus
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              className="w-full border-0"
+              type="text"
+            />
+            <button className="bg-black text-white px-3 py-1">send</button>
+          </form>
+        </div>
+      ) : null}
     </div>
   );
 };
@@ -185,26 +196,15 @@ function ChatItem({ username, isUser, message }) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const pusher = new ServerPusher({
-    appId: process.env.PUSHER_APP_ID as string,
-    key: process.env.NEXT_PUBLIC_PUSHER_APP_KEY as string,
-    secret: process.env.PUSHER_APP_SECRET as string,
-    cluster: process.env.NEXT_PUBLIC_PUSHER_APP_CLUSTER as string,
-    useTLS: true,
-  });
-  try {
-    const res = await pusher.get({ path: "/channels" });
-    const body = await res.json();
-    const channelInfo = body.channels;
-    return {
-      props: {
-        channelInfo,
-      },
-    };
-  } catch (error) {
-    console.log(error);
-    return {};
-  }
+  auth(process.env.UPSTASH_URL, process.env.UPSTASH_TOKEN);
+  const allMessages = await zrange(
+    `channel#${context.query.channelName}`,
+    0,
+    -1
+  );
+  return {
+    props: { messages: allMessages.data.map((m) => JSON.parse(m)) },
+  };
 };
 
 export default Chat;
