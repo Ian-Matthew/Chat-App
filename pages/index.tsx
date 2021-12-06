@@ -24,9 +24,11 @@ const Home: NextPage = () => {
           </a>
         </Link>
 
-        <a className="underline text-lg text-blue-500 cursor-pointer">
-          I'm not a horse...
-        </a>
+        <Link href="/chat/horses">
+          <a className="underline text-lg text-blue-500 cursor-pointer">
+            I'm not a horse...
+          </a>
+        </Link>
       </div>
     </section>
   );
