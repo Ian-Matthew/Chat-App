@@ -66,7 +66,6 @@ export function Channel(props: { messages: Message[] }) {
           >
             {messages.map((message, i) => {
               if (i === messages.length - 1) {
-                debugger;
               }
               return (
                 <MessageItem
@@ -80,7 +79,7 @@ export function Channel(props: { messages: Message[] }) {
         </div>
       </main>
 
-      {/* The Message Input Controls */}
+      {/* The Message Input Controls -- for horses only */}
       {status === "authenticated" ? (
         <div className="h-16 mb-10 my-5 ">
           <form

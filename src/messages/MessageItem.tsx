@@ -35,14 +35,14 @@ export function MessageItem({
             </span>
           </div>
         </div>
-        <img
+        {/* <img
           src="/horse-head.svg"
           alt="My profile"
           className={classNames(
             "w-6 h-6 rounded-full",
             isOwnMessage ? "order-2" : "order-1"
           )}
-        />
+        /> */}
       </div>
     </div>
   );

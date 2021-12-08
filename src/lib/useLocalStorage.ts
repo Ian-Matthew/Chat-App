@@ -1,4 +1,5 @@
 // https://usehooks-ts.com/react-hook/use-local-storage
+// 🤟 Love them hooks!
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 import { useEventListener } from "./useEventListener";

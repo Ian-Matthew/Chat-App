@@ -1,11 +1,8 @@
 import type { NextPage } from "next";
-import Link from "next/link";
-import { useRouter } from "next/router";
 import { useUser } from "../src/auth/useUser";
-import { useSession, signIn, signOut } from "next-auth/react";
+import { signIn, signOut } from "next-auth/react";
 
 const Home: NextPage = () => {
-  const router = useRouter();
   const { updateUser } = useUser();
   return (
     <section className="text-black font-sans  mt-20 max-w-screen-lg">
@@ -28,7 +25,7 @@ const Home: NextPage = () => {
           className="!cursor-pointer px-5 button-glow  font-medium py-3 bg-blue-700 text-white text-lg rounded-lg"
           onClick={() => signIn("github", { callbackUrl: "/chat/profile" })}
         >
-          Start Chatting— it's free!
+          Start Chatting— it&#39;s free!
         </button>
 
         <button
@@ -38,7 +35,7 @@ const Home: NextPage = () => {
             await signOut({ callbackUrl: "/chat/horses" });
           }}
         >
-          I'm not a horse...
+          I&#39;m not a horse...
         </button>
       </div>
     </section>

@@ -1,6 +1,5 @@
 import React from "react";
 import Pusher from "pusher-js";
-import { useEncryption } from "../lib/encrypt";
 import { useUser } from "../auth/useUser";
 type Message = {
   channelName: string;
@@ -14,10 +13,14 @@ export function useLiveMessages(
   initialMessages: Message[],
   channelName: string
 ) {
+  // Grab our key and user
   const { key, user } = useUser();
-  console.log("key", key);
+  // Snag that session
   const session = useSession();
+  // An authed user is a Horse. And a Horse can see messages.
   const isHorse = session.status === "authenticated";
+
+  // Decrypt the messages
   const messagesToSet = initialMessages.map((message) => {
     try {
       const decryptedMessage = isHorse
@@ -38,6 +41,7 @@ export function useLiveMessages(
     }
   });
 
+  // Set the initial messages (before any socket events take over)
   const [messages, setMessages] = React.useState<Message[]>(messagesToSet);
 
   // Method called when a socket event is received

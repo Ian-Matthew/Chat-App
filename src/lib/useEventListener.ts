@@ -1,5 +1,5 @@
 //https://usehooks-ts.com/react-hook/use-event-listener
-
+// Thanks alot ^^^ Great site for hooks
 import { RefObject, useEffect, useRef } from "react";
 
 export function useEventListener<T extends HTMLElement = HTMLDivElement>(

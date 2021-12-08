@@ -2,12 +2,13 @@ import React from "react";
 import { useSession } from "next-auth/react";
 import { useLocalStorage } from "../../src/lib/useLocalStorage";
 import { useRouter } from "next/router";
-function Profile(props) {
-  const { data: session, status } = useSession();
+function Profile() {
+  const { status } = useSession();
   const [username, setUserName] = useLocalStorage("username", "");
-  const userNameInputRef = React.useRef(null);
+  const userNameInputRef = React.useRef<HTMLInputElement | null>(null);
   const router = useRouter();
 
+  // Prevent the page from showing while we are trying to figure out auth status
   if (status === "loading") return null;
 
   return (
@@ -30,12 +31,13 @@ function Profile(props) {
         <form
           onSubmit={async (e) => {
             e.preventDefault();
-            setUserName(userNameInputRef.current.value);
+            setUserName(userNameInputRef?.current?.value as string);
             router.push("/chat/horses");
           }}
           className="max-w-sm w-full space-y-5"
         >
           <input
+            name="username"
             ref={userNameInputRef}
             required
             defaultValue={username}
