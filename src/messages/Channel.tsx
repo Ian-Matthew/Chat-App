@@ -4,11 +4,11 @@ import { useRouter } from "next/router";
 import { Message } from "./types";
 import { useLiveMessages } from "./useLiveMessages";
 import { MessageItem } from "./MessageItem";
-import { useUser } from "../auth/useUser";
+import { useSession } from "next-auth/react";
 
 export function Channel(props: { messages: Message[] }) {
   const router = useRouter();
-  const { user } = useUser();
+  const { status } = useSession();
   const [messageInputValue, setMessageInputValue] = React.useState("");
   const { channelName } = router.query;
 
@@ -48,16 +48,12 @@ export function Channel(props: { messages: Message[] }) {
               <span># {channelName}</span>
               <ChevronDownIcon className="h-4 w-4 ml-1" />
             </h2>
-            <p className="ml-3 text-sm sm:text-base truncate">
-              Hay there, just horsin' around.
-            </p>
           </div>
-          <div className="flex text-xs sm:text-base flex-row items-center">
-            {/* TODO: Add prescense to get this number */}
-            {/* <span>
-              <strong>5</strong> horses online
-            </span> */}
-          </div>
+          <p className="ml-3 text-sm sm:text-base truncate">
+            {status === "authenticated"
+              ? `Hay there, just horsin' around`
+              : "For horses eyes only"}
+          </p>
         </div>
       </div>
       <main className="mb-auto  flex-1 font-sans overflow-y-auto ">
@@ -74,6 +70,7 @@ export function Channel(props: { messages: Message[] }) {
               }
               return (
                 <MessageItem
+                  key={i}
                   username={message.username}
                   message={message.message}
                 />
@@ -84,7 +81,7 @@ export function Channel(props: { messages: Message[] }) {
       </main>
 
       {/* The Message Input Controls */}
-      {user !== "horse" ? (
+      {status === "authenticated" ? (
         <div className="h-16 mb-10 my-5 ">
           <form
             onSubmit={(e) => {

@@ -1,7 +1,8 @@
 import React from "react";
 import { useLocalStorage } from "../lib/useLocalStorage";
+import { useSession, SessionContextValue } from "next-auth/react";
 const UserContext = React.createContext<{
-  user: null | string;
+  user: any;
   updateUser: (user: string | null) => void;
   key: string | null;
 } | null>(null);
@@ -11,11 +12,12 @@ export default function UserProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [user, setUser] = useLocalStorage("user", null);
-  const [key, setKey] = useLocalStorage("key", null);
+  const session = useSession();
+  const [username, setUserName] = useLocalStorage("username", "");
+  const [key, setKey] = React.useState("");
 
   function updateUser(newUser) {
-    setUser(newUser);
+    setUserName(newUser);
   }
 
   async function getKey() {
@@ -25,11 +27,11 @@ export default function UserProvider({
   }
 
   React.useEffect(() => {
-    if (user) getKey();
-  }, [user]);
+    if (session.status === "authenticated") getKey();
+  }, [session.status]);
 
   return (
-    <UserContext.Provider value={{ user, updateUser, key }}>
+    <UserContext.Provider value={{ user: username, updateUser, key }}>
       {children}
     </UserContext.Provider>
   );

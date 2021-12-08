@@ -6,7 +6,6 @@ import { useAsync } from "../lib/useAsync";
 const AuthContext = React.createContext(null);
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const value = useAuth();
-  console.log(value);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

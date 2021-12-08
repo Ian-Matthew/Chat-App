@@ -7,18 +7,21 @@ type Message = {
   username: string;
   message: string;
 };
+import { useSession } from "next-auth/react";
+import { encryptMessage, decryptMessage } from "../lib/encrypt";
 
 export function useLiveMessages(
   initialMessages: Message[],
   channelName: string
 ) {
-  const { encryptMessage, decryptMessage } = useEncryption();
-  const { user } = useUser();
-  const isHorse = user !== "human";
+  const { key, user } = useUser();
+  console.log("key", key);
+  const session = useSession();
+  const isHorse = session.status === "authenticated";
   const messagesToSet = initialMessages.map((message) => {
     try {
       const decryptedMessage = isHorse
-        ? decryptMessage(message.message)
+        ? decryptMessage(message.message, key)
         : "neigh";
       const decryptedUserName = isHorse ? message.username : "Secret Horse";
       return {
@@ -40,9 +43,8 @@ export function useLiveMessages(
   // Method called when a socket event is received
   function handleLiveMessage(message: Message) {
     if (message.message && message.username) {
-      debugger;
       const decryptedMessage = isHorse
-        ? decryptMessage(message.message)
+        ? decryptMessage(message.message, key)
         : "neigh";
       const decryptedUserName = isHorse ? message.username : "Secret Horse";
       setMessages((messages) => [
@@ -54,7 +56,7 @@ export function useLiveMessages(
 
   // Message to call when sending a new message
   function sendNewMessage(messageContent: string) {
-    const encryptedMessage = encryptMessage(messageContent);
+    const encryptedMessage = encryptMessage(messageContent, key);
     if (encryptedMessage) {
       const newMessage = {
         message: encryptedMessage,

@@ -4,9 +4,13 @@ import { auth, zrange } from "@upstash/redis";
 import { Channel } from "../../src/messages/Channel";
 import { Message } from "../../src/messages/types";
 import { useUser } from "../../src/auth/useUser";
+import { useSession } from "next-auth/react";
+
 function ChannelPage(props: { messages: Message[] }) {
-  const { user } = useUser();
-  if (user) {
+  const { user, key } = useUser();
+  const { status } = useSession();
+  if (status === "authenticated" && (!key || !user)) return null;
+  if (status !== "loading") {
     return <Channel messages={props.messages} />;
   }
   return null;
