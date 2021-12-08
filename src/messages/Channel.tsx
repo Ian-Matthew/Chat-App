@@ -4,11 +4,11 @@ import { useRouter } from "next/router";
 import { Message } from "./types";
 import { useLiveMessages } from "./useLiveMessages";
 import { MessageItem } from "./MessageItem";
-import { useAuthContext } from "../auth/useAuth";
+import { useUser } from "../auth/useUser";
 
 export function Channel(props: { messages: Message[] }) {
   const router = useRouter();
-  const { user, triedToAuth } = useAuthContext();
+  const { user } = useUser();
   const [messageInputValue, setMessageInputValue] = React.useState("");
   const { channelName } = router.query;
 
@@ -69,6 +69,9 @@ export function Channel(props: { messages: Message[] }) {
             className="max-w-screen-sm mx-auto w-full"
           >
             {messages.map((message, i) => {
+              if (i === messages.length - 1) {
+                debugger;
+              }
               return (
                 <MessageItem
                   username={message.username}
@@ -81,7 +84,7 @@ export function Channel(props: { messages: Message[] }) {
       </main>
 
       {/* The Message Input Controls */}
-      {user?.username ? (
+      {user !== "horse" ? (
         <div className="h-16 mb-10 my-5 ">
           <form
             onSubmit={(e) => {

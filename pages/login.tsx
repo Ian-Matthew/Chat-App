@@ -1,10 +1,11 @@
 import type { NextPage } from "next";
 import React from "react";
-import { useAuthContext } from "../src/auth/useAuth";
-import { useRouter } from "next/router";
+import router, { useRouter } from "next/router";
+import { useUser } from "../src/auth/useUser";
 const Login: NextPage = () => {
-  const { loginEmailSent, login } = useAuthContext();
-  const [email, setEmail] = React.useState();
+  const { user, updateUser } = useUser();
+  const isLoggedIn = !!user;
+  const [username, setUserName] = React.useState(user || "");
   return (
     // TODO: Move to App Shell
     <section className="text-black mt-20  max-w-screen-sm text-center">
@@ -16,34 +17,43 @@ const Login: NextPage = () => {
       </div>
       <div className="flex flex-col items-center justify-center space-y-5">
         <h1 className="text-5xl font-sans font-bold tracking-tighter ">
-          {loginEmailSent
-            ? "Check your email for a login link!"
-            : "First, enter your email address."}
+          {isLoggedIn
+            ? `Welcome back, ${user}`
+            : "First, enter your email name"}
         </h1>
+
         <p className="font-sans text-lg text-gray-700 font-normal">
-          We suggest using your{" "}
-          <strong className="font-medium text-gray-800">
-            horse email address.
-          </strong>
+          {isLoggedIn ? (
+            "Need to change your name? Go for it ya horse"
+          ) : (
+            <>
+              We suggest using your
+              <strong className="font-medium text-gray-800">horse name.</strong>
+            </>
+          )}
         </p>
         <form
           onSubmit={async (e) => {
-            console.log(e);
             e.preventDefault();
-            login(email);
+            if (username === "human") {
+              window.alert("You're not a horse!");
+            } else {
+              updateUser(username);
+              router.push("/chat/horses");
+            }
           }}
           className="max-w-sm w-full space-y-5"
         >
           <input
             required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={username}
+            onChange={(e) => setUserName(e.target.value)}
             placeholder="Starlight Glimmer"
             className="w-full rounded-md text-lg border-gray-300"
             type="text"
           />
           <button className="px-5 button-glow  font-medium py-3 bg-blue-800 text-white text-lg rounded-md w-full">
-            {loginEmailSent ? "Send Login Email Again" : "Continue"}
+            Continue
           </button>
         </form>
       </div>
@@ -51,14 +61,4 @@ const Login: NextPage = () => {
   );
 };
 
-Login.AuthGuard = WithoutSession;
-
-function WithoutSession({ children }: { children: React.ReactNode }) {
-  const router = useRouter();
-  const { session } = useAuthContext();
-
-  if (session) router.push("/chat/profile");
-
-  return <>{children}</>;
-}
 export default Login;

@@ -1,7 +1,7 @@
 import React from "react";
 import Pusher from "pusher-js";
 import { useEncryption } from "../lib/encrypt";
-import { useAuthContext } from "../auth/useAuth";
+import { useUser } from "../auth/useUser";
 type Message = {
   channelName: string;
   username: string;
@@ -13,12 +13,14 @@ export function useLiveMessages(
   channelName: string
 ) {
   const { encryptMessage, decryptMessage } = useEncryption();
-  const { user } = useAuthContext();
-  const username = user?.username;
+  const { user } = useUser();
+  const isHorse = user !== "human";
   const messagesToSet = initialMessages.map((message) => {
     try {
-      const decryptedMessage = user ? decryptMessage(message.message) : "neigh";
-      const decryptedUserName = user ? message.username : "Secret Horse";
+      const decryptedMessage = isHorse
+        ? decryptMessage(message.message)
+        : "neigh";
+      const decryptedUserName = isHorse ? message.username : "Secret Horse";
       return {
         ...message,
         username: decryptedUserName,
@@ -39,8 +41,10 @@ export function useLiveMessages(
   function handleLiveMessage(message: Message) {
     if (message.message && message.username) {
       debugger;
-      const decryptedMessage = user ? decryptMessage(message.message) : "neigh";
-      const decryptedUserName = user ? message.username : "Secret Horse";
+      const decryptedMessage = isHorse
+        ? decryptMessage(message.message)
+        : "neigh";
+      const decryptedUserName = isHorse ? message.username : "Secret Horse";
       setMessages((messages) => [
         ...messages,
         { ...message, username: decryptedUserName, message: decryptedMessage },
@@ -54,7 +58,7 @@ export function useLiveMessages(
     if (encryptedMessage) {
       const newMessage = {
         message: encryptedMessage,
-        username,
+        username: user,
         channel: channelName,
       };
       try {

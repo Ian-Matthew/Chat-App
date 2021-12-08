@@ -1,6 +1,10 @@
 import type { NextPage } from "next";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { useUser } from "../src/auth/useUser";
 const Home: NextPage = () => {
+  const { user, updateUser } = useUser();
+  const router = useRouter();
   return (
     <section className="text-black font-sans  mt-20 max-w-screen-lg">
       <div className="text-7xl -mb-9 ">🗨️🐴</div>
@@ -24,11 +28,16 @@ const Home: NextPage = () => {
           </a>
         </Link>
 
-        <Link href="/chat/horses">
+        <button
+          onClick={() => {
+            updateUser("human");
+            router.push("/chat/horses");
+          }}
+        >
           <a className="underline text-lg text-blue-500 cursor-pointer">
             I'm not a horse...
           </a>
-        </Link>
+        </button>
       </div>
     </section>
   );

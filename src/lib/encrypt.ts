@@ -1,6 +1,6 @@
 // @ts-ignore: Unreachable code error
 import aes256 from "aes256";
-import { useAuthContext } from "../auth/useAuth";
+import { useUser } from "../auth/useUser";
 
 export function encryptMessage(text: string, key: string) {
   if (!key) return false;
@@ -13,7 +13,7 @@ export function decryptMessage(text: string, key: string) {
 }
 
 export function useEncryption() {
-  const { key } = useAuthContext();
+  const { key } = useUser();
   function encrypt(text: string) {
     return encryptMessage(text, key);
   }

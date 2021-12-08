@@ -1,18 +1,15 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import { Layout } from "../src/Layout";
-import { AuthProvider } from "../src/auth/useAuth";
 import React from "react";
+import UserProvider from "../src/auth/useUser";
 function MyApp({ Component, pageProps }: AppProps) {
-  const AuthGuard = Component.AuthGuard || React.Fragment;
   return (
-    <AuthProvider>
-      <AuthGuard>
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
-      </AuthGuard>
-    </AuthProvider>
+    <UserProvider>
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
+    </UserProvider>
   );
 }
 

@@ -3,11 +3,13 @@ import { GetServerSideProps } from "next";
 import { auth, zrange } from "@upstash/redis";
 import { Channel } from "../../src/messages/Channel";
 import { Message } from "../../src/messages/types";
-import { useAuthContext } from "../../src/auth/useAuth";
+import { useUser } from "../../src/auth/useUser";
 function ChannelPage(props: { messages: Message[] }) {
-  const { triedToAuth } = useAuthContext();
-  if (!triedToAuth) return null;
-  return <Channel messages={props.messages} />;
+  const { user } = useUser();
+  if (user) {
+    return <Channel messages={props.messages} />;
+  }
+  return null;
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
@@ -23,11 +25,5 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     },
   };
 };
-
-ChannelPage.AuthGuard = WithUserOrEmptyUser;
-function WithUserOrEmptyUser({ children }: { children: React.ReactNode }) {
-  const { user, session } = useAuthContext();
-  return <>{children}</>;
-}
 
 export default ChannelPage;
