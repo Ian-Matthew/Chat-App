@@ -1,10 +1,16 @@
-import type { NextPage } from "next";
 import React from "react";
-import { Example } from "../src/example-feature/Example";
+import { useSession } from "next-auth/react";
+import { useLocalStorage } from "../../src/lib/useLocalStorage";
 import { useRouter } from "next/router";
-const Login: NextPage = () => {
-  const [username, setUsername] = React.useState();
+function Profile() {
+  const { status } = useSession();
+  const [username, setUserName] = useLocalStorage("username", "");
+  const userNameInputRef = React.useRef<HTMLInputElement | null>(null);
   const router = useRouter();
+
+  // Prevent the page from showing while we are trying to figure out auth status
+  if (status === "loading") return null;
+
   return (
     <section className="text-black mt-20  max-w-screen-sm text-center">
       <div className="text-4xl mb-0">🗨️🐴</div>
@@ -15,24 +21,26 @@ const Login: NextPage = () => {
       </div>
       <div className="flex flex-col items-center justify-center space-y-5">
         <h1 className="text-5xl font-sans font-bold tracking-tighter ">
-          First, enter your name.
+          {"First, enter your username"}
         </h1>
+
         <p className="font-sans text-lg text-gray-700 font-normal">
           We suggest using your{" "}
           <strong className="font-medium text-gray-800">horse name.</strong>
         </p>
         <form
-          onSubmit={(e) => {
-            console.log(e);
+          onSubmit={async (e) => {
             e.preventDefault();
-            router.push(`/chat/horses?username=${username}`);
+            setUserName(userNameInputRef?.current?.value as string);
+            router.push("/chat/horses");
           }}
           className="max-w-sm w-full space-y-5"
         >
           <input
+            name="username"
+            ref={userNameInputRef}
             required
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            defaultValue={username}
             placeholder="Starlight Glimmer"
             className="w-full rounded-md text-lg border-gray-300"
             type="text"
@@ -44,6 +52,6 @@ const Login: NextPage = () => {
       </div>
     </section>
   );
-};
+}
 
-export default Login;
+export default Profile;

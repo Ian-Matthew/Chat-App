@@ -1,6 +1,9 @@
 import type { NextPage } from "next";
-import Link from "next/link";
+import { useUser } from "../src/auth/useUser";
+import { signIn, signOut } from "next-auth/react";
+
 const Home: NextPage = () => {
+  const { updateUser } = useUser();
   return (
     <section className="text-black font-sans  mt-20 max-w-screen-lg">
       <div className="text-7xl -mb-9 ">🗨️🐴</div>
@@ -18,15 +21,22 @@ const Home: NextPage = () => {
         internet.
       </p>
       <div className="space-x-10 mt-10">
-        <Link href="/login">
-          <a className="px-5 button-glow  font-medium py-3 bg-blue-700 text-white text-lg rounded-lg">
-            Start Chatting— it's free
-          </a>
-        </Link>
+        <button
+          className="!cursor-pointer px-5 button-glow  font-medium py-3 bg-blue-700 text-white text-lg rounded-lg"
+          onClick={() => signIn("github", { callbackUrl: "/chat/profile" })}
+        >
+          Start Chatting— it&#39;s free!
+        </button>
 
-        <a className="underline text-lg text-blue-500 cursor-pointer">
-          I'm not a horse...
-        </a>
+        <button
+          className=" underline text-lg text-blue-500 cursor-pointer"
+          onClick={async () => {
+            updateUser("");
+            await signOut({ callbackUrl: "/chat/horses" });
+          }}
+        >
+          I&#39;m not a horse...
+        </button>
       </div>
     </section>
   );

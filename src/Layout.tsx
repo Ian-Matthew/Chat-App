@@ -1,5 +1,4 @@
 import React from "react";
-import Link from "next/link";
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className="bg-white bg-blend-lighten w-full h-full">
