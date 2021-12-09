@@ -5,12 +5,11 @@ import { auth, zadd } from "@upstash/redis";
 import { getSession } from "next-auth/react";
 import Pusher from "pusher";
 
-auth(process.env.UPSTASH_URL, process.env.UPSTASH_TOKEN);
-
 export default async function handleChat(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  auth(process.env.UPSTASH_URL, process.env.UPSTASH_TOKEN);
   // Auth the route
   const session = await getSession({ req });
   if (!session) {
