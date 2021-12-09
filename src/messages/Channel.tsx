@@ -84,6 +84,8 @@ export function Channel(props: { messages: Message[] }) {
               e.preventDefault();
               const messageVal = messageInputValue?.trim();
               if (messageVal) {
+                console.log("content " + messageVal + "is good to go");
+
                 sendNewMessage(messageVal);
                 setMessageInputValue("");
               }

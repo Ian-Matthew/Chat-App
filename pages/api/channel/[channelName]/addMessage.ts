@@ -32,7 +32,7 @@ export default async function handleChat(
   pusher.trigger(`${req.query.channelName}`, "message", message);
 
   // Add to sorted set, scored by the date added
-  await zadd(`channel#${req.query.channelName}`, Date.now(), message);
+  zadd(`channel#${req.query.channelName}`, Date.now(), message);
 
   return res.status(200).json({ name: "Chat" });
 }

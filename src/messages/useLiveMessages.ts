@@ -18,32 +18,12 @@ export function useLiveMessages(
   // An authed user is a Horse. And a Horse can see messages.
   const isHorse = user;
 
-  // Decrypt the messages
-  const messagesToSet = initialMessages.map((message) => {
-    try {
-      const decryptedMessage = isHorse
-        ? decryptMessage(message.message)
-        : "neigh";
-      const decryptedUserName = isHorse ? message.username : "Secret Horse";
-      return {
-        ...message,
-        username: decryptedUserName,
-        message: decryptedMessage,
-      };
-    } catch (error) {
-      return {
-        ...message,
-        message: "neigh",
-        username: "Secret Horse",
-      };
-    }
-  });
-
   // Set the initial messages (before any socket events take over)
-  const [messages, setMessages] = React.useState<Message[]>(messagesToSet);
+  const [messages, setMessages] = React.useState<Message[]>(initialMessages);
 
   // Method called when a socket event is received
   function handleLiveMessage(message: Message) {
+    console.log("handling message", message);
     if (message.message && message.username) {
       const decryptedMessage = isHorse
         ? decryptMessage(message.message)
@@ -58,14 +38,14 @@ export function useLiveMessages(
 
   // Message to call when sending a new message
   function sendNewMessage(messageContent: string) {
-    const encryptedMessage = encryptMessage(messageContent);
-    if (encryptedMessage) {
+    if (messageContent) {
       const newMessage = {
-        message: encryptedMessage,
+        message: messageContent,
         username: user,
         channel: channelName,
       };
       try {
+        console.log("trying to send message", newMessage);
         fetch(`/api/channel/${channelName}/addMessage`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -97,7 +77,7 @@ export function useLiveMessages(
     return () => {
       channel.unbind("message", handleLiveMessage);
     };
-  }, [channelName]);
+  }, []);
 
   return { messages, sendNewMessage };
 }
