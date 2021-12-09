@@ -14,7 +14,7 @@ So, with this horse app, a few new challenges presented themselves that weren't 
 
 ## Live Demo
 
-A live demo of the project can be found [here](https://the-drawing-app.vercel.app/). You can enter the chat as a horse by authenticating through Github. OR, if you are a human, you can still get a feed of all the messages coming in -- but they are encrypted -- once again, this is an app built for horses, not humans.
+A live demo of the project can be found [here](https://horse-chat.vercel.app/). You can enter the chat as a horse by authenticating through Github. OR, if you are a human, you can still get a feed of all the messages coming in -- but they are encrypted -- once again, this is an app built for horses, not humans.
 
 ## User Stories
 
