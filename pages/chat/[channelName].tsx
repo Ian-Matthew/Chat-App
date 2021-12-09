@@ -12,7 +12,6 @@ function ChannelPage(props: { messages: Message[] }) {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   // auth redis
-  auth(process.env.UPSTASH_URL, process.env.UPSTASH_TOKEN);
 
   // get every message -- should probably look into some of limit w/ pagination on the client
   const allMessages = await zrange(
