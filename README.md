@@ -58,7 +58,7 @@ So, in a serverless world, how does a messaging app work? It's pretty simple, sr
 
 Pusher is a service that uses what they call pusher channels for real-time data. You can think of it really as WebSockets as a service.
 
-When users join the chat room at `/chat/[channelName], they subscribe to the `#[channelName]`pusher thread. Now, anytime our hosted Pusher instance receives an event in that namespace, any subscribed users will also receive it. An authorized user will decrypt the message with the key they received from the server when they logged in at`/api/getEncryption` -- the LEAST OBVIOUS API ROUTE NAME.
+When users join the chat room at `/chat/[channelName]`, they subscribe to the `#[channelName]`pusher thread. Now, anytime our hosted Pusher instance receives an event in that namespace, any subscribed users will also receive it. An authorized user will decrypt the message with the key they received from the server when they logged in at`/api/getEncryption` -- the LEAST OBVIOUS API ROUTE NAME.
 
 #### Sending events
 
