@@ -29,7 +29,6 @@ export function Channel(props: { messages: Message[] }) {
   }, [messages.length]);
 
   return (
-    // TODO: Extract App Shell Layout
     <div className="w-full h-screen flex flex-col">
       <div className="flex flex-col w-full items-center justify-center mt-4">
         <div className="text-4xl mb-0">🗨️🐴</div>

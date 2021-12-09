@@ -2,6 +2,7 @@ import React from "react";
 import { useSession } from "next-auth/react";
 import { useLocalStorage } from "../../src/lib/useLocalStorage";
 import { useRouter } from "next/router";
+import { AppShell } from "../../src/layout/AppShell";
 function Profile() {
   const { status } = useSession();
   const [username, setUserName] = useLocalStorage("username", "");
@@ -12,13 +13,7 @@ function Profile() {
   if (status === "loading") return null;
 
   return (
-    <section className="text-black mt-20  max-w-screen-sm text-center">
-      <div className="text-4xl mb-0">🗨️🐴</div>
-      <div className="text-4xl  font-bold mb-3 ">
-        <span className="font-horse">
-          Horse Chat<span className="!text-blue-700">.</span>
-        </span>
-      </div>
+    <AppShell>
       <div className="flex flex-col items-center justify-center space-y-5">
         <h1 className="text-5xl font-sans font-bold tracking-tighter ">
           {"First, enter your username"}
@@ -50,7 +45,7 @@ function Profile() {
           </button>
         </form>
       </div>
-    </section>
+    </AppShell>
   );
 }
 

@@ -6,7 +6,7 @@
 
 The main goal was to build a chat app with various user stories as part of a group challenge. For multiple reasons, the thought of building a chat app wasn't super interesting; after all, they all do the same thing.
 
-So, what would make mine different? I do that know all of the messaging apps I use (slack, discord, WhatsApp, etc.) focus all their energy on humans and completely miss the horse market.
+So, what would make mine different? I do that know all of the messaging apps I use (slack, discord, WhatsApp, etc.) focus all their energy on humans and **completely miss the horse market**.
 
 I've always had a soft spot for absurd comedy, and the thought of a messaging app built for horses was **very** intriguing to me. It's a dumb idea -- and taking a dumb idea seriously is always a delight. I think for all the wonderful things and innovation on the internet, we don't use it as a platform for comedy or sketches nearly enough.
 
