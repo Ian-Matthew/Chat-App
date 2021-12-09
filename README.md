@@ -45,8 +45,8 @@ I wasn't initially into the idea of a chat app because I've built similar things
 
 ### Dependencies
 
-- Next.js (framework)
-- tailwindcss (styling)
+- [Next.js](https://nextjs.org/) (framework)
+- [tailwindcss](https://tailwindcss.com) (styling)
 - [Pusher](https://pusher.com/) (realtime data )
 - [Upstash](https://upstash.com/) (Redis -- used as db/store for messages)
 
