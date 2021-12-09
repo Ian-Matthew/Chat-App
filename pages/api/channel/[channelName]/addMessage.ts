@@ -8,7 +8,6 @@ export default async function handleChat(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  auth(process.env.UPSTASH_URL, process.env.UPSTASH_TOKEN);
   // Auth the route
 
   // Instantiate Server Pusher

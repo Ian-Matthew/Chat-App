@@ -6,7 +6,6 @@ type Message = {
   username: string;
   message: string;
 };
-import { encryptMessage, decryptMessage } from "../lib/encrypt";
 
 export function useLiveMessages(
   initialMessages: Message[],
@@ -25,9 +24,7 @@ export function useLiveMessages(
   function handleLiveMessage(message: Message) {
     console.log("handling message", message);
     if (message.message && message.username) {
-      const decryptedMessage = isHorse
-        ? decryptMessage(message.message)
-        : "neigh";
+      const decryptedMessage = isHorse ? message.message : "neigh";
       const decryptedUserName = isHorse ? message.username : "Secret Horse";
       setMessages((messages) => [
         ...messages,
