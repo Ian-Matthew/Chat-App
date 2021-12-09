@@ -82,10 +82,10 @@ export function Channel(props: { messages: Message[] }) {
       {status === "authenticated" ? (
         <div className="h-16 mb-10 my-5 ">
           <form
-            onSubmit={(e) => {
+            onSubmit={async (e) => {
               e.preventDefault();
               const messageVal = messageInputValue.trim();
-              sendNewMessage(messageVal);
+              await sendNewMessage(messageVal);
               setMessageInputValue("");
             }}
             className="max-w-screen-sm mx-auto flex flex-col border-[1px] border-black"
