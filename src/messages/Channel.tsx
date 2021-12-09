@@ -4,13 +4,13 @@ import { useRouter } from "next/router";
 import { Message } from "./types";
 import { useLiveMessages } from "./useLiveMessages";
 import { MessageItem } from "./MessageItem";
-import { useSession } from "next-auth/react";
+import { useUser } from "../auth/useUser";
 
 export function Channel(props: { messages: Message[] }) {
   const router = useRouter();
-  const { status } = useSession();
   const [messageInputValue, setMessageInputValue] = React.useState("");
   const { channelName } = router.query;
+  const { user } = useUser();
 
   const { messages, sendNewMessage } = useLiveMessages(
     props.messages,
@@ -49,9 +49,7 @@ export function Channel(props: { messages: Message[] }) {
             </h2>
           </div>
           <p className="ml-3 text-sm sm:text-base truncate">
-            {status === "authenticated"
-              ? `Hay there, just horsin' around`
-              : "For horses eyes only"}
+            {!user ? `Hay there, just horsin' around` : "For horses eyes only"}
           </p>
         </div>
       </div>
@@ -79,7 +77,7 @@ export function Channel(props: { messages: Message[] }) {
       </main>
 
       {/* The Message Input Controls -- for horses only */}
-      {status === "authenticated" ? (
+      {user ? (
         <div className="h-16 mb-10 my-5 ">
           <form
             onSubmit={(e) => {

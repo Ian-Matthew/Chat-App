@@ -4,13 +4,11 @@ import { useLocalStorage } from "../../src/lib/useLocalStorage";
 import { useRouter } from "next/router";
 import { AppShell } from "../../src/layout/AppShell";
 function Profile() {
-  const { status } = useSession();
   const [username, setUserName] = useLocalStorage("username", "");
   const userNameInputRef = React.useRef<HTMLInputElement | null>(null);
   const router = useRouter();
 
   // Prevent the page from showing while we are trying to figure out auth status
-  if (status === "loading") return null;
 
   return (
     <AppShell>

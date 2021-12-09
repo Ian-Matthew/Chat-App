@@ -7,15 +7,7 @@ import { useUser } from "../../src/auth/useUser";
 import { useSession } from "next-auth/react";
 
 function ChannelPage(props: { messages: Message[] }) {
-  const { user, key } = useUser();
-  const { status } = useSession();
-  // This is so authenticated users cannot see the channel until the encryption key is fetched
-  if (status === "authenticated" && (!key || !user)) return null;
-  // Otherwise, so long as we are authenticated, we can render the channel w/o the key -- since they wont be able to see messages anyway
-  if (status !== "loading") {
-    return <Channel messages={props.messages} />;
-  }
-  return null;
+  return <Channel messages={props.messages} />;
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {

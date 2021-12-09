@@ -2,7 +2,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { uid } from "uid";
 import { auth, zadd } from "@upstash/redis";
-import { getSession } from "next-auth/react";
 import Pusher from "pusher";
 
 export default async function handleChat(
@@ -11,11 +10,6 @@ export default async function handleChat(
 ) {
   auth(process.env.UPSTASH_URL, process.env.UPSTASH_TOKEN);
   // Auth the route
-  const session = await getSession({ req });
-  if (!session) {
-    // Bail out if not authed -- horses only
-    return res.status(401).end();
-  }
 
   // Instantiate Server Pusher
   const pusher = new Pusher({
@@ -34,11 +28,11 @@ export default async function handleChat(
     id,
   });
   console.log(`got a chat for channel ${req.query.channelName}`, req.body);
-
-  // Add to sorted set, scored by the date added
-  zadd(`channel#${req.query.channelName}`, Date.now(), message);
   // Emit to channel so client can pick up
   pusher.trigger(`${req.query.channelName}`, "message", message);
+
+  // Add to sorted set, scored by the date added
+  await zadd(`channel#${req.query.channelName}`, Date.now(), message);
 
   return res.status(200).json({ name: "Chat" });
 }

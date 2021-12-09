@@ -2,8 +2,10 @@ import type { NextPage } from "next";
 import { useUser } from "../src/auth/useUser";
 import { signIn, signOut } from "next-auth/react";
 import Head from "next/head";
+import { useRouter } from "next/router";
 const Home: NextPage = () => {
   const { updateUser } = useUser();
+  const router = useRouter();
   return (
     <section className="text-black px-4 font-sans mx-auto mt-20 w-full max-w-screen-md">
       <Head>
@@ -27,7 +29,7 @@ const Home: NextPage = () => {
       <div className="space-x-10 my-10 flex items-center">
         <button
           className="!cursor-pointer px-5 button-glow  font-medium py-3 bg-blue-700 text-white sm:text-lg rounded-lg"
-          onClick={() => signIn("github", { callbackUrl: "/chat/profile" })}
+          onClick={() => router.push("/chat/profile")}
         >
           Start Chatting— it&#39;s free!
         </button>
@@ -36,7 +38,7 @@ const Home: NextPage = () => {
           className=" underline text-lg text-blue-500 cursor-pointer"
           onClick={async () => {
             updateUser("");
-            await signOut({ callbackUrl: "/chat/horses" });
+            router.push("/chat/horses");
           }}
         >
           I&#39;m not a horse...
