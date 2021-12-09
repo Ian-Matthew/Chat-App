@@ -10,6 +10,7 @@ export default NextAuth({
     }),
     // ...add more providers here
   ],
+  secret: process.env.AUTH_SECRET,
   callbacks: {
     jwt: async ({ token, user }) => {
       if (user?.id) token.userId = user.id;
