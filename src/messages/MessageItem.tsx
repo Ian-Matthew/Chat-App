@@ -8,7 +8,7 @@ export function MessageItem({
   message: string;
 }) {
   const { user } = useUser();
-  const isOwnMessage = user?.trim() === username.trim();
+  const isOwnMessage = user?.trim() === username?.trim();
   return (
     <div className="w-full group px-5 py-4 bg-white hover:bg-gray-50">
       <div
